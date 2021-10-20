@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TrainTicketBooking
 {
-    class User
+    public class User
     {
         public int UserId { get; set; }
         public string UserName { get; set; }
@@ -18,6 +18,7 @@ namespace TrainTicketBooking
 
         public List<User> UsersList = new List<User>();
 
+        public IFileReadWrite FileManager = new FileManager();
 
         public void InstantiateUser()
         {
@@ -31,7 +32,8 @@ namespace TrainTicketBooking
         }
         public void AddNewUser(string name, out int userId)
         {
-            List<User> userlistTemp = JsonConvert.DeserializeObject<List<User>>(File.ReadAllText("User.json"));
+            string userFromJson = FileManager.ReadAllText("User.json");
+            List<User> userlistTemp = JsonConvert.DeserializeObject<List<User>>(userFromJson);
 
             int num = userlistTemp.Count();
             User user = new User()
@@ -45,20 +47,21 @@ namespace TrainTicketBooking
 
             //add to jsonFile
             string userJsonInput = JsonConvert.SerializeObject(userlistTemp);
-            File.WriteAllText("User.json", userJsonInput);
+            FileManager.WriteAllText("User.json", userJsonInput);
         }
         public void InputUserDetails()
         {
             //from List => JsonFile
             string userJsonInput = JsonConvert.SerializeObject(UsersList);
-            File.WriteAllText("User.json", userJsonInput);
+            FileManager.WriteAllText("User.json", userJsonInput);
 
         }
 
         public void GetAllUser()
         {
             //From JsonFile => Code
-            List<User> userlistTemp = JsonConvert.DeserializeObject<List<User>>(File.ReadAllText("User.json"));
+            string userFromJson = FileManager.ReadAllText("User.json");
+            List<User> userlistTemp = JsonConvert.DeserializeObject<List<User>>(userFromJson);
             foreach (User item in userlistTemp)
             {
                 Console.WriteLine("ID: " + item.UserId);
@@ -72,7 +75,9 @@ namespace TrainTicketBooking
 
         public void GetSelectedUserFinalDetail(int userId)
         {
-            List<User> userlistTemp = JsonConvert.DeserializeObject<List<User>>(File.ReadAllText("User.json"));
+            string userFromJson = FileManager.ReadAllText("User.json");
+            List<User> userlistTemp = JsonConvert.DeserializeObject<List<User>>(userFromJson);
+
             var Useritem = userlistTemp.First(x => x.UserId == userId);
             if (Useritem != null)
             {

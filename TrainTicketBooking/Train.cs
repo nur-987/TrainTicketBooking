@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace TrainTicketBooking
 {
-
-    class Train
+    public class Train
     {
         public int TrainId { get; set; }
         public string StartDestination { get; set; }
@@ -19,6 +18,8 @@ namespace TrainTicketBooking
         public DateTime ArrivalTime { get; set; }
 
         public List<Train> AvailableTrainList = new List<Train>();
+
+        public IFileReadWrite FileManager = new FileManager();
 
         public void CreateTrainList()
         {
@@ -139,12 +140,15 @@ namespace TrainTicketBooking
         public void AddToJson()
         {
             string trainListJson = JsonConvert.SerializeObject(AvailableTrainList);
-            File.WriteAllText("TrainList.json", trainListJson);
+            FileManager.WriteAllText("TrainList.json", trainListJson);
         }
         public void DisplayFromJson()
         {
             Console.WriteLine("Trains on 01/12/2021");
-            List<Train> trainlistJson = JsonConvert.DeserializeObject<List<Train>>(File.ReadAllText("TrainList.json"));
+
+            string trainFromJson = FileManager.ReadAllText("TrainList.json");
+            List<Train> trainlistJson = JsonConvert.DeserializeObject<List<Train>>(trainFromJson);
+
             foreach (Train item in trainlistJson)
             {
                 Console.WriteLine("ID: " + item.TrainId);

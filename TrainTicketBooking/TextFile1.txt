@@ -16,6 +16,7 @@ c) time of departure and arrival
 => each travel class has its own base fare. 
 => also has a fare based on distance (fare rate X distance)
 => total cost = base fare + distance fare
+=> after complete buying alert user to make payment
 
 Train
 1) Has 5 unique destinations

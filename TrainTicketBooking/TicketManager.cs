@@ -11,13 +11,18 @@ namespace TrainTicketBooking
     delegate void TransactionAlert(double totalCost);
     class TickerManager
     {
+        //interface boxing FileManager is now an interface
+        IFileReadWrite FileManager = new FileManager();
+
         public event TransactionAlert TransactionComplete;
         public void BuyTicket(int trainId, out int ChosenDist)
         {
             //getting the distance
             int distance = 0;
 
-            List<Train> trainlistJson = JsonConvert.DeserializeObject<List<Train>>(File.ReadAllText("TrainList.json"));
+            string trainFromJson = FileManager.ReadAllText("TrainList.json");
+            List<Train> trainlistJson = JsonConvert.DeserializeObject<List<Train>>(trainFromJson);
+
             foreach (Train item in trainlistJson)
             {
                 if (item.TrainId == trainId)
@@ -41,7 +46,9 @@ namespace TrainTicketBooking
             //adding the class chosen to user.cs
             basePrice = 0;
 
-            List<User> userlistTemp = JsonConvert.DeserializeObject<List<User>>(File.ReadAllText("User.json"));
+            string userFromJson = FileManager.ReadAllText("User.json");
+            List<User> userlistTemp = JsonConvert.DeserializeObject<List<User>>(userFromJson);
+
             foreach (User item in userlistTemp)
             {
                 if (item.UserId == userId)
@@ -96,8 +103,7 @@ namespace TrainTicketBooking
             }
             //updates the trainClass chosen
             var updatedString = JsonConvert.SerializeObject(userlistTemp, Formatting.Indented);
-            File.WriteAllText("User.json", updatedString);
-
+            FileManager.WriteAllText("User.json", updatedString);
         }
 
         public void CalculateFinalPrice(int basePrice, int ChosenDist, int numOfTickets, int userId)
@@ -119,7 +125,8 @@ namespace TrainTicketBooking
             //}
             #endregion
 
-            List<User> userlistTemp = JsonConvert.DeserializeObject<List<User>>(File.ReadAllText("User.json"));
+            string userFromJson = FileManager.ReadAllText("User.json");
+            List<User> userlistTemp = JsonConvert.DeserializeObject<List<User>>(userFromJson);
 
             //linQ version; optimised search
             var user = userlistTemp.First(x => x.UserId == userId);
@@ -131,7 +138,7 @@ namespace TrainTicketBooking
 
             //updates the numOfTickets and totalCost
             var updatedString = JsonConvert.SerializeObject(userlistTemp, Formatting.Indented);
-            File.WriteAllText("User.json", updatedString);
+            FileManager.WriteAllText("User.json", updatedString);
 
             //get user to make payment
             if (TransactionComplete != null)

@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace TrainTicketBooking
 {
-    public enum TrainClass
+    public interface IFileReadWrite
     {
-        FirstClass,
-        BusinessClass,
-        Economy
+        string ReadAllText(string FileName);
+        void WriteAllText(string FileName, string InputDetails);
+
     }
 }
