@@ -1,0 +1,27 @@
+﻿Topic: Train Ticket Booking System
+
+System will the following capabilities;
+
+1) Allow customer to book a train ticket
+=> Choose a boarding station and final destination
+=> Choose timing of the train departure
+=> allowed to buy multiple tickets
+=> information collected during booking: 
+a) passenger name
+b) number of tickets buying 
+c) time of departure and arrival
+
+
+2) Calculate the cost of the train ticket bought
+=> each travel class has its own base fare. 
+=> also has a fare based on distance (fare rate X distance)
+=> total cost = base fare + distance fare
+
+Train
+1) Has 5 unique destinations
+2) Have different travel times 
+3) Have different travel class
+a)Business Class
+b)First Cass
+c)Economy
+*Train information is stored in a file 
