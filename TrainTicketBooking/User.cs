@@ -18,7 +18,7 @@ namespace TrainTicketBooking
 
         public List<User> UsersList = new List<User>();
 
-        public IFileReadWrite FileManager = new FileManager();
+        public FileManager FileManager = new FileManager();
 
         public void InstantiateUser()
         {
@@ -29,7 +29,12 @@ namespace TrainTicketBooking
 
             };
             UsersList.Add(user);
+
+            //from List => JsonFile
+            string userJsonInput = JsonConvert.SerializeObject(UsersList);
+            FileManager.WriteAllText("User.json", userJsonInput);
         }
+
         public void AddNewUser(string name, out int userId)
         {
             string userFromJson = FileManager.ReadAllText("User.json");
@@ -48,13 +53,6 @@ namespace TrainTicketBooking
             //add to jsonFile
             string userJsonInput = JsonConvert.SerializeObject(userlistTemp);
             FileManager.WriteAllText("User.json", userJsonInput);
-        }
-        public void InputUserDetails()
-        {
-            //from List => JsonFile
-            string userJsonInput = JsonConvert.SerializeObject(UsersList);
-            FileManager.WriteAllText("User.json", userJsonInput);
-
         }
 
         public void GetAllUser()

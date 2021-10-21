@@ -8,8 +8,8 @@ using Newtonsoft.Json;
 
 namespace TrainTicketBooking
 {
-    delegate void TransactionAlert(double totalCost);
-    class TickerManager
+    public delegate void TransactionAlert(double totalCost);
+    public class TicketManager
     {
         //interface boxing FileManager is now an interface
         IFileReadWrite FileManager = new FileManager();
@@ -53,19 +53,19 @@ namespace TrainTicketBooking
             {
                 if (item.UserId == userId)
                 {
-                    if (enumIndex == 1)
+                    if (enumIndex == 0)
                     {
                         item.TrainClass = TrainClass.FirstClass;
                         int basePrice1 = 300;
                         basePrice = basePrice1;
                     }
-                    if (enumIndex == 2)
+                    if (enumIndex == 1)
                     {
                         item.TrainClass = TrainClass.BusinessClass;
                         int basePrice2 = 250;
                         basePrice = basePrice2;
                     }
-                    if (enumIndex == 3)
+                    if (enumIndex == 2)
                     {
                         item.TrainClass = TrainClass.Economy;
                         int basePrice3 = 150;
@@ -140,7 +140,7 @@ namespace TrainTicketBooking
             var updatedString = JsonConvert.SerializeObject(userlistTemp, Formatting.Indented);
             FileManager.WriteAllText("User.json", updatedString);
 
-            //get user to make payment
+            //prompt user to make payment
             if (TransactionComplete != null)
             {
                 TransactionComplete.Invoke(grandTotal);

@@ -15,7 +15,7 @@ namespace TrainTicketBooking
         {
             User user = new User();
             Train train = new Train();
-            TickerManager tickerManager = new TickerManager();
+            TicketManager ticketManager = new TicketManager();
             bool b = true;
 
             Console.WriteLine("Welcome to Train Ticket Booking Service");
@@ -57,7 +57,7 @@ namespace TrainTicketBooking
                     //purchase by train ID
                     Console.WriteLine("Which train ticket would u like to purchase? Input ID");
                     int trainId = Int32.Parse(Console.ReadLine());
-                    tickerManager.BuyTicket(trainId, out int ChosenDist);
+                    ticketManager.BuyTicket(trainId, out int ChosenDist);
 
 
                     Console.WriteLine("Choose travel class");
@@ -65,16 +65,16 @@ namespace TrainTicketBooking
                     Console.WriteLine("2) " + TrainClass.BusinessClass.ToString());
                     Console.WriteLine("3) " + TrainClass.Economy.ToString());
                     int tempClass = Int32.Parse(Console.ReadLine());
-                    tickerManager.CalculateBasePrice(tempClass, userId, out int basePrice);
+                    ticketManager.CalculateBasePrice(tempClass, userId, out int basePrice);
 
                     Console.WriteLine("How many tickets?");
                     int tempNumofTicket = Int32.Parse(Console.ReadLine());
 
                     //raise event
                     //ask user to make payment after completed booking
-                    tickerManager.TransactionComplete += tickerManager.Calculation_TransactionComplete;
+                    ticketManager.TransactionComplete += ticketManager.Calculation_TransactionComplete;
 
-                    tickerManager.CalculateFinalPrice(basePrice, ChosenDist, tempNumofTicket, userId);
+                    ticketManager.CalculateFinalPrice(basePrice, ChosenDist, tempNumofTicket, userId);
 
                     user.GetSelectedUserFinalDetail(userId);
 

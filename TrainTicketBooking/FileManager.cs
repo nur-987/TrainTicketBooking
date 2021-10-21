@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TrainTicketBooking
 {
-    class FileManager : IFileReadWrite
+    public class FileManager : IFileReadWrite
     {
         public FileManager()
         {
@@ -16,13 +16,14 @@ namespace TrainTicketBooking
 
         public string ReadAllText(string FileName)
         {
-            string content = ReadAllText(FileName);
+            string content = File.ReadAllText(FileName);
             return content;
+
         }
 
         public void WriteAllText(string FileName, string InputDetails)
         {
-            WriteAllText(FileName, InputDetails);
+            File.WriteAllText(FileName, InputDetails);
         }
     }
 }
