@@ -12,7 +12,7 @@ namespace TrainTicketBooking
     public class TicketManager
     {
         //interface boxing FileManager is now an interface
-        IFileReadWrite FileManager = new FileManager();
+        FileManager FileManager = new FileManager();
 
         public event TransactionAlert TransactionComplete;
         public void BuyTicket(int trainId, out int ChosenDist)
@@ -148,10 +148,5 @@ namespace TrainTicketBooking
 
         }
 
-        public void Calculation_TransactionComplete(double totalCost)
-        {
-            Console.WriteLine("Please make payment of $" + totalCost + " within 24 hours");
-            Console.WriteLine("proceed to payment at: www.trainticketpayment.com");
-        }
     }
 }

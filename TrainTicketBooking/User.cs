@@ -55,7 +55,7 @@ namespace TrainTicketBooking
             FileManager.WriteAllText("User.json", userJsonInput);
         }
 
-        public void GetAllUser()
+        public List<User> GetAllUser()
         {
             //From JsonFile => Code
             string userFromJson = FileManager.ReadAllText("User.json");
@@ -69,9 +69,10 @@ namespace TrainTicketBooking
                 Console.WriteLine("Cost: " + item.TotalCost);
 
             }
+            return userlistTemp;
         }
 
-        public void GetSelectedUserFinalDetail(int userId)
+        public User GetSelectedUserFinalDetail(int userId)
         {
             string userFromJson = FileManager.ReadAllText("User.json");
             List<User> userlistTemp = JsonConvert.DeserializeObject<List<User>>(userFromJson);
@@ -85,6 +86,7 @@ namespace TrainTicketBooking
                 Console.WriteLine("Class: " + Useritem.TrainClass);
                 Console.WriteLine("Cost: " + Useritem.TotalCost);
             }
+            return Useritem;
 
         }
 

@@ -19,7 +19,7 @@ namespace TrainTicketBooking
 
         public List<Train> AvailableTrainList = new List<Train>();
 
-        public IFileReadWrite FileManager = new FileManager();
+        public FileManager FileManager = new FileManager();
 
         public void CreateTrainList()
         {

@@ -1,6 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using TrainTicketBooking;
 
 namespace UnitTestTicketBooking
@@ -14,6 +18,8 @@ namespace UnitTestTicketBooking
         public void TestInitialize()
         {
             user = new User();
+
+            #region
             //var fileMock = new Mock<IFileReadWrite>(MockBehavior.Strict);
             //user.FileManager = fileMock.Object;
 
@@ -32,7 +38,7 @@ namespace UnitTestTicketBooking
 
             //fileMock.Setup(x => x.ReadAllText("User.json")).Returns(usersInJsonFile);
             //fileMock.Setup(x => x.WriteAllText("User.json", usersToUpdateInJsonFile));
-            
+            #endregion
         }
 
         [TestMethod]
@@ -49,6 +55,19 @@ namespace UnitTestTicketBooking
             user.AddNewUser("Kelly", out int userId);
 
             Assert.AreEqual(4, userId);
+
+        }
+        [TestMethod]
+        public void GetAlluserTest()
+        {
+            user.GetSelectedUserFinalDetail(1);
+            string userFromJson = File.ReadAllText("User.json");
+            List<User> userlistTemp = JsonConvert.DeserializeObject<List<User>>(userFromJson);
+            var Useritem = userlistTemp.First(x => x.UserId == 1);
+
+            Assert.IsNotNull(userlistTemp);
+            //Assert.IsInstanceOfType(Useritem, user);
+
 
         }
 

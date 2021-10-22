@@ -72,7 +72,7 @@ namespace TrainTicketBooking
 
                     //raise event
                     //ask user to make payment after completed booking
-                    ticketManager.TransactionComplete += ticketManager.Calculation_TransactionComplete;
+                    ticketManager.TransactionComplete += Calculation_TransactionComplete;
 
                     ticketManager.CalculateFinalPrice(basePrice, ChosenDist, tempNumofTicket, userId);
 
@@ -99,8 +99,14 @@ namespace TrainTicketBooking
                 
             }
 
+
             Console.ReadLine();
 
+        }
+        private static void Calculation_TransactionComplete(double totalCost)
+        {
+            Console.WriteLine("Please make payment of $" + totalCost + " within 24 hours");
+            Console.WriteLine("proceed to payment at: www.trainticketpayment.com");
         }
 
     }
