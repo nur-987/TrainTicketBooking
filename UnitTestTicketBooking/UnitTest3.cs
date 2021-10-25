@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,30 +10,31 @@ using TrainTicketBooking;
 namespace UnitTestTicketBooking
 {
     [TestClass]
-    public class UnitTest2
+    public class UnitTest3
     {
-        Train train;
+        FileManager fileManager;
+
         [TestInitialize]
         public void TestInitialize()
         {
-            train = new Train();
-        }
-
-
-        [TestMethod]
-        public void CreateTrainListTest()
-        {
-            train.CreateTrainList();
-            int trainCount = train.AvailableTrainList.Count;
-            Assert.AreEqual(trainCount, 10);
-
+            fileManager = new FileManager();
         }
 
         [TestMethod]
-        public void DisplayTrainTest()
+        public void FileReadExceptionTest()
         {
-            var trainListReturned = train.DisplayFromJson();
-            Assert.IsNotNull(trainListReturned);
+            
+            string result = fileManager.ReadAllText("NonExistentFileName.json");
+            Assert.IsNull(result);
+
+        }
+
+        [TestMethod]
+        public void FileWriteExceptionTest()
+        {
+            string newUser = null ;
+            Assert.IsFalse(fileManager.WriteAllText(" ", newUser));
+
         }
 
     }

@@ -31,15 +31,18 @@ namespace TrainTicketBooking
 
         }
 
-        public void WriteAllText(string FileName, string InputDetails)
+        public bool WriteAllText(string FileName, string InputDetails)
         {
             try
             {
                 File.WriteAllText(FileName, InputDetails);
+                return true;
+
             }
             catch(Exception ex)
             {
                 Console.WriteLine($"error in file! {ex.Message}");
+                return false;
             }
 
         }

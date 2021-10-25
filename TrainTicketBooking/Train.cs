@@ -142,7 +142,7 @@ namespace TrainTicketBooking
             string trainListJson = JsonConvert.SerializeObject(AvailableTrainList);
             FileManager.WriteAllText("TrainList.json", trainListJson);
         }
-        public void DisplayFromJson()
+        public List<Train> DisplayFromJson()
         {
             Console.WriteLine("Trains on 01/12/2021");
 
@@ -159,6 +159,7 @@ namespace TrainTicketBooking
                 Console.WriteLine("-------------------------------------------");
 
             }
+            return trainlistJson;
         }
 
         #region using .txt

@@ -55,27 +55,31 @@ namespace UnitTestTicketBooking
             user.AddNewUser("Kelly", out int userId);
 
             Assert.AreEqual(4, userId);
-
         }
+
         [TestMethod]
-        public void GetAlluserTest()
+        public void GetSelectedUserTest()
         {
-            user.GetSelectedUserFinalDetail(1);
-            string userFromJson = File.ReadAllText("User.json");
-            List<User> userlistTemp = JsonConvert.DeserializeObject<List<User>>(userFromJson);
-            var Useritem = userlistTemp.First(x => x.UserId == 1);
+            var userListReturned = user.GetSelectedUserFinalDetail(1);
 
-            Assert.IsNotNull(userlistTemp);
-            //Assert.IsInstanceOfType(Useritem, user);
-
+            Assert.IsNotNull(userListReturned);
 
         }
 
         [TestMethod]
-        public void ExceptionHandlingTest()
+        public void CheckUserExistTrueTest()
         {
+            bool result = user.CheckUserExist(1);
+            Assert.IsTrue(result);
+           
+        }
 
-            
+        [TestMethod]
+        public void CheckUserExistFalseTest()
+        {
+            bool result = user.CheckUserExist(20);
+            Assert.IsFalse(result);
+
         }
     }
 

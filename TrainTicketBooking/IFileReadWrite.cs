@@ -9,7 +9,7 @@ namespace TrainTicketBooking
     public interface IFileReadWrite
     {
         string ReadAllText(string FileName);
-        void WriteAllText(string FileName, string InputDetails);
+        bool WriteAllText(string FileName, string InputDetails);
 
     }
 }
