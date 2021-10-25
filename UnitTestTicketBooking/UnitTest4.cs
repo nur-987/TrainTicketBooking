@@ -31,7 +31,7 @@ namespace UnitTestTicketBooking
         [TestMethod]
         public void CalculateBasePriceTest()
         {
-            ticketManager.CalculateBasePrice(0, 1, out int basePrice);
+            ticketManager.CalculateBasePrice(1, 1, out int basePrice);
             int basePriceFirstClass = 300;
 
             Assert.AreEqual(basePriceFirstClass, basePrice);
@@ -49,7 +49,7 @@ namespace UnitTestTicketBooking
         [TestMethod]
         public void CalculateBasePriceTest2()
         {
-            ticketManager.CalculateBasePrice(1, 1, out int basePrice);
+            ticketManager.CalculateBasePrice(2, 1, out int basePrice);
             int basePriceBusinessClass = 250;
 
             Assert.AreEqual(basePriceBusinessClass, basePrice);
@@ -68,7 +68,7 @@ namespace UnitTestTicketBooking
         [TestMethod]
         public void CalculateBasePriceTest3()
         {
-            ticketManager.CalculateBasePrice(2, 1, out int basePrice);
+            ticketManager.CalculateBasePrice(3, 1, out int basePrice);
             int basePriceEconClass = 150;
 
             Assert.AreEqual(basePriceEconClass, basePrice);

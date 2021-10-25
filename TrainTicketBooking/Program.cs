@@ -27,8 +27,18 @@ namespace TrainTicketBooking
                 //user.InstantiateUser();
                 //user.InputUserDetails();
 
-                Console.WriteLine("proceed to 1) BUY TICKETS   2) Check PURCHASED TICKET   3)EXIT ");
-                int input1 = Int32.Parse(Console.ReadLine());
+                int input1 = 0;
+                Console.WriteLine("proceed to 1)BUY TICKETS   2)CHECK PURCHASED TICKET   3)EXIT ");
+                try
+                {
+                    input1 = Int32.Parse(Console.ReadLine());
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine($"Error. {ex.Message}");
+                    Console.WriteLine("try again");
+                    break;
+                }
                 if (input1 == 1)
                 {
                     //check if existing user
@@ -48,7 +58,28 @@ namespace TrainTicketBooking
                     if (input == "N")
                     {
                         Console.WriteLine("userID?");
-                        userId = Int32.Parse(Console.ReadLine());
+                        try
+                        {
+                            userId = Int32.Parse(Console.ReadLine());
+                        }
+                        catch(Exception ex)
+                        {
+                            Console.WriteLine($"Error. {ex.Message}");
+                            Console.WriteLine("try again");
+                            //b = false;
+                            break;                          
+                        }
+
+                        if (!user.CheckUserExist(userId))
+                        {
+                            Console.WriteLine("user does not exist!");
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("wrong input. restarting system");
+                        break;
                     }
 
                     //display all avail trains
@@ -56,19 +87,64 @@ namespace TrainTicketBooking
 
                     //purchase by train ID
                     Console.WriteLine("Which train ticket would u like to purchase? Input ID");
-                    int trainId = Int32.Parse(Console.ReadLine());
+                    int trainId = 0;
+                    try
+                    {
+                        trainId = Int32.Parse(Console.ReadLine());
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error. {ex.Message}");
+                        Console.WriteLine("exiting system");
+                        break;
+                    }
+                   
                     ticketManager.BuyTicket(trainId, out int ChosenDist);
-
+                    if (ChosenDist == 0)
+                    {
+                        Console.WriteLine("train id does not exist. Please retry");
+                        break;
+                    }
 
                     Console.WriteLine("Choose travel class");
                     Console.WriteLine("1) " + TrainClass.FirstClass.ToString());
                     Console.WriteLine("2) " + TrainClass.BusinessClass.ToString());
                     Console.WriteLine("3) " + TrainClass.Economy.ToString());
-                    int tempClass = Int32.Parse(Console.ReadLine());
+
+                    int tempClass = 0;
+                    try
+                    {
+                        tempClass = Int32.Parse(Console.ReadLine());
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error. {ex.Message}");
+                        Console.WriteLine("exiting system");
+                        break;
+
+                    }
+
                     ticketManager.CalculateBasePrice(tempClass, userId, out int basePrice);
+                    if(basePrice == 0)
+                    {
+                        Console.WriteLine("wrong input. please try again.");
+                        break;
+                    }
 
                     Console.WriteLine("How many tickets?");
-                    int tempNumofTicket = Int32.Parse(Console.ReadLine());
+
+
+                    int tempNumofTicket = 0;
+                    try
+                    {
+                        tempNumofTicket = Int32.Parse(Console.ReadLine());
+                    }
+                    catch(Exception ex)
+                    {
+                        Console.WriteLine($"Error. {ex.Message}");
+                        Console.WriteLine("exiting system");
+                        break;
+                    }
 
                     //raise event
                     //ask user to make payment after completed booking
@@ -82,19 +158,32 @@ namespace TrainTicketBooking
                     Console.WriteLine("thankyou for making a booking");
                     b = false;
 
-                    //check
-                    //user.GetAllUser();
                 }
                 else if (input1 == 2)
                 {
                     Console.WriteLine("userID?");
-                    int userId = Int32.Parse(Console.ReadLine());
-                    user.GetSelectedUserFinalDetail(userId);
+                    int userId = 0;
+                    try
+                    {
+                        userId = Int32.Parse(Console.ReadLine());
+                        user.GetSelectedUserFinalDetail(userId);
+                    }
+                    catch(Exception ex)
+                    {
+                        Console.WriteLine($"Error. {ex.Message}");
+                        Console.WriteLine("exit application");
+                        b = false;
+                    }
+
                 }
                 else if (input1 == 3)
                 {
                     Console.WriteLine("exiting program. Good Bye");
                     b = false;
+                }
+                else
+                {
+                    Console.WriteLine("wrong input. try again");
                 }
                 
             }

@@ -55,22 +55,24 @@ namespace TrainTicketBooking
             FileManager.WriteAllText("User.json", userJsonInput);
         }
 
-        public List<User> GetAllUser()
-        {
-            //From JsonFile => Code
-            string userFromJson = FileManager.ReadAllText("User.json");
-            List<User> userlistTemp = JsonConvert.DeserializeObject<List<User>>(userFromJson);
-            foreach (User item in userlistTemp)
-            {
-                Console.WriteLine("ID: " + item.UserId);
-                Console.WriteLine("UserName: " + item.UserName);
-                Console.WriteLine("NumofTickets: " + item.NumofTicketsBooked);
-                Console.WriteLine("Class: " + item.TrainClass);
-                Console.WriteLine("Cost: " + item.TotalCost);
+        #region 
+        //public List<User> GetAllUser()
+        //{
+        //    //From JsonFile => Code
+        //    string userFromJson = FileManager.ReadAllText("User.json");
+        //    List<User> userlistTemp = JsonConvert.DeserializeObject<List<User>>(userFromJson);
+        //    foreach (User item in userlistTemp)
+        //    {
+        //        Console.WriteLine("ID: " + item.UserId);
+        //        Console.WriteLine("UserName: " + item.UserName);
+        //        Console.WriteLine("NumofTickets: " + item.NumofTicketsBooked);
+        //        Console.WriteLine("Class: " + item.TrainClass);
+        //        Console.WriteLine("Cost: " + item.TotalCost);
 
-            }
-            return userlistTemp;
-        }
+        //    }
+        //    return userlistTemp;
+        //}
+        #endregion
 
         public User GetSelectedUserFinalDetail(int userId)
         {
@@ -88,6 +90,22 @@ namespace TrainTicketBooking
             }
             return Useritem;
 
+        }
+
+        public bool CheckUserExist(int userId)
+        {
+            string userFromJson = FileManager.ReadAllText("User.json");
+            List<User> userlistTemp = JsonConvert.DeserializeObject<List<User>>(userFromJson);
+
+            foreach (User item in userlistTemp)
+            {
+                if (item.UserId == userId)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
     }

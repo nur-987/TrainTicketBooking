@@ -11,7 +11,6 @@ namespace TrainTicketBooking
     public delegate void TransactionAlert(double totalCost);
     public class TicketManager
     {
-        //interface boxing FileManager is now an interface
         FileManager FileManager = new FileManager();
 
         public event TransactionAlert TransactionComplete;
@@ -28,15 +27,11 @@ namespace TrainTicketBooking
                 if (item.TrainId == trainId)
                 {
                     distance = item.Distance;
-
                 }
 
             }
             ChosenDist = distance;
 
-            //future additions
-            //remove seat from availabe seats
-            //provide seat number
 
         }
 
@@ -53,52 +48,29 @@ namespace TrainTicketBooking
             {
                 if (item.UserId == userId)
                 {
-                    if (enumIndex == 0)
+                    if (enumIndex == 1)
                     {
                         item.TrainClass = TrainClass.FirstClass;
                         int basePrice1 = 300;
                         basePrice = basePrice1;
                     }
-                    if (enumIndex == 1)
+                    if (enumIndex == 2)
                     {
                         item.TrainClass = TrainClass.BusinessClass;
                         int basePrice2 = 250;
                         basePrice = basePrice2;
                     }
-                    if (enumIndex == 2)
+                    if (enumIndex == 3)
                     {
                         item.TrainClass = TrainClass.Economy;
                         int basePrice3 = 150;
                         basePrice = basePrice3;
                     }
+                    else
+                    {
+                        break;
+                    }
                 }
-
-                #region old code without json file
-                //    foreach (User useritem in user.UsersList)
-                //{
-                //    if (useritem.UserId == userId)
-                //    {
-                //        if (enumIndex == 1)
-                //        {
-                //            useritem.TrainClass = MyClass.FirstClass;
-                //            int basePrice1 = 300;
-                //            basePrice = basePrice1;
-                //        }
-                //        if (enumIndex == 2)
-                //        {
-                //            useritem.TrainClass = MyClass.BussinessClass;
-                //            int basePrice2 = 250;
-                //            basePrice = basePrice2;
-                //        }
-                //        if (enumIndex == 3)
-                //        {
-                //            useritem.TrainClass = MyClass.Economy;
-                //            int basePrice3 = 150;
-                //            basePrice = basePrice3;
-                //        }
-                //    }
-                //}
-                #endregion
 
             }
             //updates the trainClass chosen
@@ -113,17 +85,6 @@ namespace TrainTicketBooking
             double grandTotal = totalPerTicket * numOfTickets;
 
             Console.WriteLine("final bill is:$ " + grandTotal);
-
-            #region old code without json
-            //foreach (User item in user.UsersList)
-            //{
-            //    if (item.UserId == userId)
-            //    {
-            //        item.NumofTicketsBooked = numOfTickets;
-            //        item.TotalCost = grandTotal;
-            //    }
-            //}
-            #endregion
 
             string userFromJson = FileManager.ReadAllText("User.json");
             List<User> userlistTemp = JsonConvert.DeserializeObject<List<User>>(userFromJson);
