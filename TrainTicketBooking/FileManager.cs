@@ -16,14 +16,32 @@ namespace TrainTicketBooking
 
         public string ReadAllText(string FileName)
         {
-            string content = File.ReadAllText(FileName);
+            string content = null; 
+            try
+            {
+                content = File.ReadAllText(FileName);
+                //return content;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"error in file! {ex.Message}");
+            }
+
             return content;
 
         }
 
         public void WriteAllText(string FileName, string InputDetails)
         {
-            File.WriteAllText(FileName, InputDetails);
+            try
+            {
+                File.WriteAllText(FileName, InputDetails);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"error in file! {ex.Message}");
+            }
+
         }
     }
 }
