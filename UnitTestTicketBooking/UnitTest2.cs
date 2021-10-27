@@ -13,11 +13,11 @@ namespace UnitTestTicketBooking
     [TestClass]
     public class UnitTest2
     {
-        Train train;
+        TrainWorker train;
         [TestInitialize]
         public void TestInitialize()
         {
-            train = new Train();
+            train = new TrainWorker();
         }
 
 

@@ -1,11 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using System;
 namespace TrainTicketBooking
 {
     class Program
@@ -13,80 +6,71 @@ namespace TrainTicketBooking
 
         static void Main(string[] args)
         {
-            User user = new User();
-            Train train = new Train();
+            UserWorker user = new UserWorker();
+            TrainWorker train = new TrainWorker();
             TicketManager ticketManager = new TicketManager();
             bool b = true;
 
             Console.WriteLine("Welcome to Train Ticket Booking Service");
             while (b)
             {
-                //only during first run of prog to input data in
-                //train.CreateTrainList();
-                //train.AddToJson();
-                //user.InstantiateUser();
-                //user.InputUserDetails();
-
                 int input1 = 0;
-                Console.WriteLine("proceed to 1)BUY TICKETS   2)CHECK PURCHASED TICKET   3)EXIT ");
+                Console.WriteLine("Choose from the following menus");
+                Console.WriteLine("1) Buy Tickets");
+                Console.WriteLine("2) Purchase History");
+                Console.WriteLine("3) Exit ");
                 try
                 {
                     input1 = Int32.Parse(Console.ReadLine());
                 }
                 catch(Exception ex)
                 {
-                    Console.WriteLine($"Error. {ex.Message}");
-                    Console.WriteLine("try again");
-                    break;
+                    Console.WriteLine("Wrong Input. Please choose among the available options.");
+                    continue;
                 }
                 if (input1 == 1)
                 {
-                    //check if existing user
-                    //else create user
-                    Console.WriteLine("are you a new user? Y/N");
+                    Console.WriteLine("Are you an existing user? (Y/N) "); //check if existing user, else create user
                     string input = Console.ReadLine();
                     int userId = 0;
-                    if (input == "Y")
+                    if (string.Equals(input,"N",StringComparison.OrdinalIgnoreCase))
                     {
-                        //create new user
-                        Console.WriteLine("name?");
+                        Console.WriteLine("Enter your name."); //create new user
                         string name = Console.ReadLine();
                         user.AddNewUser(name, out int tempuserId);
                         userId = tempuserId;
-
                     }
-                    else if (input == "N")
+                    else if (string.Equals(input, "Y", StringComparison.OrdinalIgnoreCase))
                     {
-                        Console.WriteLine("userID?");
+                        Console.WriteLine("Enter your user ID");
                         try
                         {
                             userId = Int32.Parse(Console.ReadLine());
                         }
                         catch(Exception ex)
                         {
-                            Console.WriteLine($"Error. {ex.Message}");
-                            Console.WriteLine("try again");
+                            Console.WriteLine("Wrong input. Please enter a valid user id");
                             //b = false;
                             break;                          
                         }
 
                         if (!user.CheckUserExist(userId))
                         {
-                            Console.WriteLine("user does not exist!");
+                            Console.WriteLine("User does not exist. Please select the correct option.");
                             break;
                         }
                     }
                     else
                     {
-                        Console.WriteLine("wrong input for user id. restarting system. please try again");
+                        Console.WriteLine("Wrong input. Please choose among the available options.");
                         break;
                     }
 
-                    //display all avail trains
-                    train.DisplayFromJson();
+                    
+                    train.DisplayFromJson(); //display all avail trains
 
-                    //purchase by train ID
-                    Console.WriteLine("Which train ticket would u like to purchase? Input ID");
+                    
+                    Console.WriteLine("Which train ticket would u like to purchase? Input ID"); //purchase by train ID
                     int trainId = 0;
                     try
                     {
@@ -94,19 +78,18 @@ namespace TrainTicketBooking
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"Error. {ex.Message}");
-                        Console.WriteLine("exiting system");
+                        Console.WriteLine("Wrong input. Please choose among the available train id.");
                         break;
                     }
                    
                     ticketManager.BuyTicket(trainId, out int ChosenDist);
                     if (ChosenDist == 0)
                     {
-                        Console.WriteLine("train id does not exist. Please retry");
+                        Console.WriteLine("Train id does not exist. Please choose among the available train id.");
                         break;
                     }
 
-                    Console.WriteLine("Choose travel class");
+                    Console.WriteLine("Choose a travel class");
                     Console.WriteLine("1) " + TrainClass.FirstClass.ToString());
                     Console.WriteLine("2) " + TrainClass.BusinessClass.ToString());
                     Console.WriteLine("3) " + TrainClass.Economy.ToString());
@@ -118,8 +101,7 @@ namespace TrainTicketBooking
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"Error. {ex.Message}");
-                        Console.WriteLine("exiting system");
+                        Console.WriteLine("Wrong input. Please choose among the available travel class.");
                         break;
 
                     }
@@ -127,11 +109,11 @@ namespace TrainTicketBooking
                     ticketManager.CalculateBasePrice(tempClass, userId, out int basePrice);
                     if(basePrice == 0)
                     {
-                        Console.WriteLine("wrong input for train class. please try again.");
+                        Console.WriteLine("Wrong input. Please choose among the available travel class.");
                         break;
                     }
 
-                    Console.WriteLine("How many tickets?");
+                    Console.WriteLine("Enter the total number of tickets to purchase:");
 
 
                     int tempNumofTicket = 0;
@@ -141,8 +123,7 @@ namespace TrainTicketBooking
                     }
                     catch(Exception ex)
                     {
-                        Console.WriteLine($"Error. {ex.Message}");
-                        Console.WriteLine("exiting system");
+                        Console.WriteLine("Wrong input. PLease enter the correct amount");
                         break;
                     }
 
@@ -152,10 +133,11 @@ namespace TrainTicketBooking
 
                     ticketManager.CalculateFinalPrice(basePrice, ChosenDist, tempNumofTicket, userId);
 
+                    Console.WriteLine("Here are your booking details.");
                     user.GetSelectedUserFinalDetail(userId);
 
                     //after booking complete, exit prog
-                    Console.WriteLine("thankyou for making a booking");
+                    Console.WriteLine("You have completed your booking. Thank you.");
                     b = false;
 
                 }
@@ -183,14 +165,11 @@ namespace TrainTicketBooking
                 }
                 else
                 {
-                    Console.WriteLine("wrong input. try again");
+                    Console.WriteLine("Wrong Input. Please choose among the available options.");
                 }
                 
             }
-
-
             Console.ReadLine();
-
         }
         private static void Calculation_TransactionComplete(double totalCost)
         {

@@ -12,12 +12,12 @@ namespace UnitTestTicketBooking
     [TestClass]
     public class UnitTest1
     {
-        User user;
+        UserWorker user;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            user = new User();
+            user = new UserWorker();
 
             #region
             //var fileMock = new Mock<IFileReadWrite>(MockBehavior.Strict);

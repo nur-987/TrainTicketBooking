@@ -50,7 +50,9 @@
     <Compile Include="TicketManager.cs" />
     <Compile Include="Train.cs" />
     <Compile Include="TrainClassEnum.cs" />
+    <Compile Include="TrainWorker.cs" />
     <Compile Include="User.cs" />
+    <Compile Include="UserWorker.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
