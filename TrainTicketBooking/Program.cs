@@ -55,7 +55,7 @@ namespace TrainTicketBooking
                         userId = tempuserId;
 
                     }
-                    if (input == "N")
+                    else if (input == "N")
                     {
                         Console.WriteLine("userID?");
                         try
@@ -78,7 +78,7 @@ namespace TrainTicketBooking
                     }
                     else
                     {
-                        Console.WriteLine("wrong input. restarting system");
+                        Console.WriteLine("wrong input for user id. restarting system. please try again");
                         break;
                     }
 
@@ -127,7 +127,7 @@ namespace TrainTicketBooking
                     ticketManager.CalculateBasePrice(tempClass, userId, out int basePrice);
                     if(basePrice == 0)
                     {
-                        Console.WriteLine("wrong input. please try again.");
+                        Console.WriteLine("wrong input for train class. please try again.");
                         break;
                     }
 
@@ -146,7 +146,7 @@ namespace TrainTicketBooking
                         break;
                     }
 
-                    //raise event
+                    //subscribes to event
                     //ask user to make payment after completed booking
                     ticketManager.TransactionComplete += Calculation_TransactionComplete;
 
