@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,10 +10,13 @@ namespace TrainTicketBooking
 {
     public class TrainWorker
     {
-        public List<Train> AvailableTrainList = new List<Train>();
-
         public FileManager FileManager = new FileManager();
-
+        private List<Train> _trainlistJson;
+        IAppConfiguration _config;
+        public TrainWorker(IAppConfiguration config)        //interface boxing; allow for mocking
+        {
+            _config = config;
+        }
         public void CreateTrainList()
         {
             Train train1 = new Train()
@@ -116,7 +120,7 @@ namespace TrainTicketBooking
                 ArrivalTime = new DateTime(2021, 12, 01, 07, 00, 00),
 
             };
-
+            List<Train> AvailableTrainList = new List<Train>();
             AvailableTrainList.Add(train1);
             AvailableTrainList.Add(train2);
             AvailableTrainList.Add(train3);
@@ -133,26 +137,70 @@ namespace TrainTicketBooking
             FileManager.WriteAllText("TrainList.json", trainListJson);
 
         }
-        public List<Train> DisplayFromJson()
+
+        public void Initialize()
         {
-            Console.WriteLine("Trains on 01/12/2021");
-
+            if (!File.Exists("TrainList.json"))
+                CreateTrainList();
             string trainFromJson = FileManager.ReadAllText("TrainList.json");
-            List<Train> trainlistJson = JsonConvert.DeserializeObject<List<Train>>(trainFromJson);
-
-            foreach (Train item in trainlistJson)
+            _trainlistJson = JsonConvert.DeserializeObject<List<Train>>(trainFromJson);
+            foreach (Train train in _trainlistJson)
             {
-                Console.WriteLine("ID: " + item.TrainId);
-                Console.Write("StartDestination: " + item.StartDestination + "   ");
-                Console.WriteLine("EndDestination: " + item.EndDestination);
-                Console.Write("DepartureTime: " + item.DepartureTime.ToShortTimeString() + "   ");
-                Console.WriteLine("ArrrivalTime: " + item.ArrivalTime.ToShortTimeString());
-                Console.WriteLine("-------------------------------------------");
-
+                train.BusinessClassFare = _config.BusinessClassBasePrice + train.Distance * _config.BusinessClassDistanceMultiplier;
+                train.EconomyClassFare = _config.EconomyClassBasePrice + train.Distance * _config.EconomyClassDistanceMultiplier;
+                train.FirstClassFare = _config.FirstClassBasePrice + train.Distance * _config.FirstClassDistanceMultiplier;
             }
-            return trainlistJson;
         }
 
+        public List<string> GetAllSourceStations()
+        {
+            //IList vs List?
+            List<string> sourceStationList = new List<string>();
+            foreach(Train train in _trainlistJson)
+            {
+                if (!sourceStationList.Contains(train.StartDestination))
+                {
+                    sourceStationList.Add(train.StartDestination);
+                }
+                    
+            }
+            return sourceStationList;
+        }
+
+        public List<string> GetAllDestinationStations()
+        {
+            List<string> destinationStationList = new List<string>();
+            foreach (Train train in _trainlistJson)
+            {
+                if (!destinationStationList.Contains(train.EndDestination))
+                    destinationStationList.Add(train.EndDestination);
+            }
+            return destinationStationList;
+        }
+
+        public List<Train> GetTrainsBetweenStations(string source, string destination)
+        {
+            return _trainlistJson.Where(x => string.Equals(x.EndDestination, destination,StringComparison.OrdinalIgnoreCase)
+            && string.Equals(x.StartDestination, source, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
+        #region
+        //public List<Train> DisplayFromJson()
+        //{
+        //    Console.WriteLine("Trains on 01/12/2021");
+        //    foreach (Train item in trainlistJson)
+        //    {
+        //        Console.WriteLine("ID: " + item.TrainId);
+        //        Console.Write("StartDestination: " + item.StartDestination + "   ");
+        //        Console.WriteLine("EndDestination: " + item.EndDestination);
+        //        Console.Write("DepartureTime: " + item.DepartureTime.ToShortTimeString() + "   ");
+        //        Console.WriteLine("ArrrivalTime: " + item.ArrivalTime.ToShortTimeString());
+        //        Console.WriteLine("-------------------------------------------");
+
+        //    }
+        //    return trainlistJson;
+        //}
+# endregion
         #region using .txt
         //public void InputIntoFile()
         //{

@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TrainTicketBooking
+﻿namespace TrainTicketBooking
 {
-    public enum TrainClass
+    /// <summary>
+    /// This is an enum whihc represents different classes of tickets available for a user to buy
+    /// </summary>
+    public enum TrainClassEnum
     {
+        /// <summary>
+        /// Represents the First Class
+        /// </summary>
         FirstClass,
         BusinessClass,
         Economy

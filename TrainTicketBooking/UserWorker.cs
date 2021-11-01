@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TrainTicketBooking
 {
@@ -18,7 +16,7 @@ namespace TrainTicketBooking
             User user = new User()
             {
                 UserId = 1,
-                UserName = "Genny",
+                Name = "Genny",
 
             };
             UsersList.Add(user);
@@ -37,7 +35,7 @@ namespace TrainTicketBooking
             User user = new User()
             {
                 UserId = num + 1,
-                UserName = name,
+                Name = name,
 
             };
             userId = user.UserId;
@@ -48,25 +46,6 @@ namespace TrainTicketBooking
             FileManager.WriteAllText("User.json", userJsonInput);
         }
 
-        #region 
-        //public List<User> GetAllUser()
-        //{
-        //    //From JsonFile => Code
-        //    string userFromJson = FileManager.ReadAllText("User.json");
-        //    List<User> userlistTemp = JsonConvert.DeserializeObject<List<User>>(userFromJson);
-        //    foreach (User item in userlistTemp)
-        //    {
-        //        Console.WriteLine("ID: " + item.UserId);
-        //        Console.WriteLine("UserName: " + item.UserName);
-        //        Console.WriteLine("NumofTickets: " + item.NumofTicketsBooked);
-        //        Console.WriteLine("Class: " + item.TrainClass);
-        //        Console.WriteLine("Cost: " + item.TotalCost);
-
-        //    }
-        //    return userlistTemp;
-        //}
-        #endregion
-
         public User GetSelectedUserFinalDetail(int userId)
         {
             string userFromJson = FileManager.ReadAllText("User.json");
@@ -76,10 +55,8 @@ namespace TrainTicketBooking
             if (Useritem != null)
             {
                 Console.WriteLine("ID: " + Useritem.UserId);
-                Console.WriteLine("UserName: " + Useritem.UserName);
-                Console.WriteLine("Number of Tickets: " + Useritem.NumofTicketsBooked);
-                Console.WriteLine("Class: " + Useritem.TrainClass);
-                Console.WriteLine("Cost: $" + Useritem.TotalCost);
+                Console.WriteLine("UserName: " + Useritem.Name);
+                //foreach ticket = print ticket history
             }
             return Useritem;
 
@@ -101,5 +78,23 @@ namespace TrainTicketBooking
             return false;
         }
 
+        #region 
+        //public List<User> GetAllUser()
+        //{
+        //    //From JsonFile => Code
+        //    string userFromJson = FileManager.ReadAllText("User.json");
+        //    List<User> userlistTemp = JsonConvert.DeserializeObject<List<User>>(userFromJson);
+        //    foreach (User item in userlistTemp)
+        //    {
+        //        Console.WriteLine("ID: " + item.UserId);
+        //        Console.WriteLine("UserName: " + item.UserName);
+        //        Console.WriteLine("NumofTickets: " + item.NumofTicketsBooked);
+        //        Console.WriteLine("Class: " + item.TrainClass);
+        //        Console.WriteLine("Cost: " + item.TotalCost);
+
+        //    }
+        //    return userlistTemp;
+        //}
+        #endregion
     }
 }
