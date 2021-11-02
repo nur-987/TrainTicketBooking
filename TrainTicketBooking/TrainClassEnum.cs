@@ -1,7 +1,7 @@
 ﻿namespace TrainTicketBooking
 {
     /// <summary>
-    /// This is an enum whihc represents different classes of tickets available for a user to buy
+    /// This is an enum which represents different classes of tickets available for a user to buy
     /// </summary>
     public enum TrainClassEnum
     {

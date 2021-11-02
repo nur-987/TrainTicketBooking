@@ -10,7 +10,7 @@ namespace TrainTicketBooking
         static void Main(string[] args)
         {
             UserWorker user = new UserWorker();
-            //user.Initialize();
+            user.Initialize();
 
             IAppConfiguration configuration = new AppConfiguration();
             configuration.Initialize(300,250,150,3.5,2.5, 1.5);
@@ -148,10 +148,24 @@ namespace TrainTicketBooking
 
                         Console.WriteLine("Which train ticket would u like to purchase? Input Train Id"); //purchase by train ID
                         int temptrainId = 0;
+                        int tempClass = 0;
+                        var trainSelected = new Train();
                         try
                         {
                             temptrainId = Int32.Parse(Console.ReadLine());
-                            var trainId = availableTrainRoutesList.First(x => x.TrainId == temptrainId);
+                            trainSelected = availableTrainRoutesList.First(x => x.TrainId == temptrainId);
+
+                            //display class options and their cost.
+                            Console.WriteLine($"You have selected a train FROM: {trainSelected.StartDestination} TO: {trainSelected.EndDestination}");
+                            Console.WriteLine($"Train Departure Time: {trainSelected.DepartureTime.ToShortTimeString()}");
+                            Console.WriteLine($"Train Arrival Time: {trainSelected.ArrivalTime.ToShortTimeString()}");
+                            Console.WriteLine("Please choose a train class: ");
+                            Console.WriteLine("1) " + TrainClassEnum.FirstClass.ToString() + " Price:$ " +trainSelected.FirstClassFare);
+                            Console.WriteLine("2) " + TrainClassEnum.BusinessClass.ToString() + " Price:$ " + trainSelected.BusinessClassFare);
+                            Console.WriteLine($"3) {TrainClassEnum.Economy} Cost:$ {trainSelected.EconomyClassFare}");
+
+                            tempClass = Int32.Parse(Console.ReadLine());
+                            ticketManager.BuyTicket(userId, trainSelected, tempClass-1);
                             userSelectTrainFlag = false;
 
                         }
@@ -160,26 +174,33 @@ namespace TrainTicketBooking
                             Console.WriteLine("Wrong input. Please choose among the available Train Id.");
                             continue;
                         }
+                        
 
                     }
 
-                    Console.WriteLine("Choose a travel class");
-                    Console.WriteLine("1) " + TrainClassEnum.FirstClass.ToString());
-                    Console.WriteLine("2) " + TrainClassEnum.BusinessClass.ToString());
-                    Console.WriteLine("3) " + TrainClassEnum.Economy.ToString());
-
-                    int tempClass = 0;
-                    try
+                    bool travelClassSelectionFlag = true;
+                    while (travelClassSelectionFlag)
                     {
-                        tempClass = Int32.Parse(Console.ReadLine());
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("Wrong input. Please choose among the available travel class.");
-                        break;
+                        
+                        int tempClass = 0;
+                        try
+                        {
+                            tempClass = Int32.Parse(Console.ReadLine());
+                            //convert this id to an enum
+                            
+                            //ticketManager.BuyTicket(userId, tempTrainId, Enum.GetName(typeof(TrainClassEnum),tempClass));
 
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Wrong input. Please choose among the available travel class.");
+                            continue;
+
+                        }
                     }
 
+
+                    
                     //ticketManager.BuyTicket(trainId, tempClass,out int ChosenDist);
                     //if (ChosenDist == 0)
                     //{

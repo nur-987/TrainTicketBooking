@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace TrainTicketBooking
 {
@@ -6,6 +7,8 @@ namespace TrainTicketBooking
     {
         public int UserId { get; set; }
         public string Name { get; set; }
+
+        [JsonProperty(Required = Required.Default)]
         public List<Ticket> TicketHistory { get; set; }
 
     }

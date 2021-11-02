@@ -141,7 +141,9 @@ namespace TrainTicketBooking
         public void Initialize()
         {
             if (!File.Exists("TrainList.json"))
+            {
                 CreateTrainList();
+            }  
             string trainFromJson = FileManager.ReadAllText("TrainList.json");
             _trainlistJson = JsonConvert.DeserializeObject<List<Train>>(trainFromJson);
             foreach (Train train in _trainlistJson)
@@ -154,7 +156,6 @@ namespace TrainTicketBooking
 
         public List<string> GetAllSourceStations()
         {
-            //IList vs List?
             List<string> sourceStationList = new List<string>();
             foreach(Train train in _trainlistJson)
             {
@@ -184,6 +185,29 @@ namespace TrainTicketBooking
             && string.Equals(x.StartDestination, source, StringComparison.OrdinalIgnoreCase)).ToList();
         }
 
+        public List<string> GetTrainClass()
+        {
+            List<string> trainClassList = new List<string>();
+            foreach (string trainClass in Enum.GetNames(typeof(TrainClassEnum)))
+            {
+                trainClassList.Add(trainClass);
+            }
+
+            return trainClassList;
+        }
+
+        public void DisplayPriceForAllClass(int trainId)
+        {
+            foreach (Train train in _trainlistJson)
+            {
+                if (train.TrainId == trainId)
+                {
+
+                }
+
+            }
+        }
+
         #region
         //public List<Train> DisplayFromJson()
         //{
@@ -200,7 +224,7 @@ namespace TrainTicketBooking
         //    }
         //    return trainlistJson;
         //}
-# endregion
+        #endregion
         #region using .txt
         //public void InputIntoFile()
         //{

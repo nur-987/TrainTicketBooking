@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace TrainTicketBooking
@@ -11,15 +12,18 @@ namespace TrainTicketBooking
 
         public FileManager FileManager = new FileManager();
 
-        public void InstantiateUser()
+        public void Initialize()
         {
-            User user = new User()
+            if (!File.Exists("User.json"))
             {
-                UserId = 1,
-                Name = "Genny",
+                User user = new User()
+                {
+                    UserId = 1,
+                    Name = "Genny",
 
-            };
-            UsersList.Add(user);
+                };
+                UsersList.Add(user);
+            }
 
             //from List => JsonFile
             string userJsonInput = JsonConvert.SerializeObject(UsersList);
