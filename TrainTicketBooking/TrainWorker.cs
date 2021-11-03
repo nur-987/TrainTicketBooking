@@ -196,18 +196,6 @@ namespace TrainTicketBooking
             return trainClassList;
         }
 
-        public void DisplayPriceForAllClass(int trainId)
-        {
-            foreach (Train train in _trainlistJson)
-            {
-                if (train.TrainId == trainId)
-                {
-
-                }
-
-            }
-        }
-
         #region
         //public List<Train> DisplayFromJson()
         //{
