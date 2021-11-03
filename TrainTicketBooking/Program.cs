@@ -38,10 +38,12 @@ namespace TrainTicketBooking
                     Console.WriteLine("Wrong Input. Please choose among the available options.");
                     continue;
                 }
-                if (input1 == 1)
+                if (input1 == 1) //buy ticket
                 {
-                    bool userFlag = true;
                     int userId = 0;
+                    var trainSelected = new Train();
+
+                    bool userFlag = true;
                     while (userFlag)
                     {
                         Console.WriteLine("Are you an existing user? (Y/N) "); //check if existing user, else create user
@@ -51,6 +53,8 @@ namespace TrainTicketBooking
                             Console.WriteLine("Enter your name: "); //create new user
                             string name = Console.ReadLine();
                             user.AddNewUser(name, out userId);
+                            userFlag = false;
+
                         }
                         else if (string.Equals(input, "Y", StringComparison.OrdinalIgnoreCase))
                         {
@@ -148,24 +152,17 @@ namespace TrainTicketBooking
 
                         Console.WriteLine("Which train ticket would u like to purchase? Input Train Id"); //purchase by train ID
                         int temptrainId = 0;
-                        int tempClass = 0;
-                        var trainSelected = new Train();
                         try
                         {
                             temptrainId = Int32.Parse(Console.ReadLine());
                             trainSelected = availableTrainRoutesList.First(x => x.TrainId == temptrainId);
 
                             //display class options and their cost.
-                            Console.WriteLine($"You have selected a train FROM: {trainSelected.StartDestination} TO: {trainSelected.EndDestination}");
+                            Console.WriteLine("You have selected a train");
+                            Console.WriteLine($"FROM: {trainSelected.StartDestination} TO: {trainSelected.EndDestination}");
                             Console.WriteLine($"Train Departure Time: {trainSelected.DepartureTime.ToShortTimeString()}");
                             Console.WriteLine($"Train Arrival Time: {trainSelected.ArrivalTime.ToShortTimeString()}");
-                            Console.WriteLine("Please choose a train class: ");
-                            Console.WriteLine("1) " + TrainClassEnum.FirstClass.ToString() + " Price:$ " +trainSelected.FirstClassFare);
-                            Console.WriteLine("2) " + TrainClassEnum.BusinessClass.ToString() + " Price:$ " + trainSelected.BusinessClassFare);
-                            Console.WriteLine($"3) {TrainClassEnum.Economy} Cost:$ {trainSelected.EconomyClassFare}");
 
-                            tempClass = Int32.Parse(Console.ReadLine());
-                            ticketManager.BuyTicket(userId, trainSelected, tempClass-1);
                             userSelectTrainFlag = false;
 
                         }
@@ -175,79 +172,86 @@ namespace TrainTicketBooking
                             continue;
                         }
                         
-
                     }
 
                     bool travelClassSelectionFlag = true;
                     while (travelClassSelectionFlag)
-                    {
-                        
+                    {                      
                         int tempClass = 0;
+                        int tempNumofTicket = 0;
                         try
                         {
+                            Console.WriteLine("Please choose a train class: ");
+                            Console.WriteLine($"1) {TrainClassEnum.FirstClass} Price:$ {trainSelected.FirstClassFare}");
+                            Console.WriteLine($"2) {TrainClassEnum.BusinessClass} Price:$ {trainSelected.BusinessClassFare}");
+                            Console.WriteLine($"3) {TrainClassEnum.Economy} Price:$ {trainSelected.EconomyClassFare}");
+
                             tempClass = Int32.Parse(Console.ReadLine());
-                            //convert this id to an enum
-                            
-                            //ticketManager.BuyTicket(userId, tempTrainId, Enum.GetName(typeof(TrainClassEnum),tempClass));
+                            TrainClassEnum selectedClass = (TrainClassEnum)tempClass - 1;
+                            //enum out of range exception not handled
+
+                            Console.WriteLine("Enter the total number of tickets to purchase:");
+                            tempNumofTicket = Int32.Parse(Console.ReadLine());
+
+                            ticketManager.BuyTicket(userId, trainSelected, selectedClass, tempNumofTicket);
+                            travelClassSelectionFlag = false;
 
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine("Wrong input. Please choose among the available travel class.");
+                            Console.WriteLine("Wrong input. Please choose among the available travel class and enter the correct number");
                             continue;
-
                         }
+
                     }
 
-
-                    
-                    //ticketManager.BuyTicket(trainId, tempClass,out int ChosenDist);
-                    //if (ChosenDist == 0)
-                    //{
-                    //    Console.WriteLine("Train id does not exist. Please choose among the available train id.");
-                    //    break;
-                    //}
-
-                    Console.WriteLine("Enter the total number of tickets to purchase:");
-
-
-                    int tempNumofTicket = 0;
-                    try
+                    bool finalConfirmation = true;
+                    while (finalConfirmation)
                     {
-                        tempNumofTicket = Int32.Parse(Console.ReadLine());
-                    }
-                    catch(Exception ex)
-                    {
-                        Console.WriteLine("Wrong input. PLease enter the correct amount");
-                        break;
-                    }
+                        //subscribes to event
+                        //ask user to make payment after completed booking
+                        ticketManager.TransactionComplete += Calculation_TransactionComplete;
 
-                    //subscribes to event
-                    //ask user to make payment after completed booking
-                    ticketManager.TransactionComplete += Calculation_TransactionComplete;
 
-                    Console.WriteLine("Here are your booking details.");
-                    user.GetSelectedUserFinalDetail(userId);
+                        Console.WriteLine("Here are your booking details.");
+                        user.GetSelectedUserFinalDetail(userId);
+
+                        ticketManager.GrandTotal(userId);
+                        finalConfirmation = false;
+
+                    }
 
                     //after booking complete, exit prog
                     Console.WriteLine("You have completed your booking. Thank you.");
                     b = false;
 
+
                 }
                 else if (input1 == 2)
                 {
-                    Console.WriteLine("Enter your userID");
-                    int userId = 0;
-                    try
+                    bool userDetailsFlag = true;
+                    while (userDetailsFlag)
                     {
-                        userId = Int32.Parse(Console.ReadLine());
-                        user.GetSelectedUserFinalDetail(userId);
-                        //check user exist
-                    }
-                    catch(Exception ex)
-                    {
-                        Console.WriteLine("Wrong input. PLease enter correct user id");
-                        b = false;
+                        Console.WriteLine("Enter your userID");
+                        int userId = 0;
+                        try
+                        {
+                            userId = Int32.Parse(Console.ReadLine());
+                            if (user.CheckUserExist(userId))
+                            {
+                                user.GetSelectedUserAllDetails(userId);
+                                userDetailsFlag = false;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Wrong input. Please enter valid user id");
+                            }
+
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Wrong input. Please enter correct user id");
+                        }
                     }
 
                 }

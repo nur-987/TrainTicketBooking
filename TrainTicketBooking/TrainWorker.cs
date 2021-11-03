@@ -59,7 +59,6 @@ namespace TrainTicketBooking
                 ArrivalTime = new DateTime(2021, 12, 01, 21, 30, 00)
 
             };
-
             Train train5 = new Train()
             {
                 TrainId = 5,
@@ -120,6 +119,7 @@ namespace TrainTicketBooking
                 ArrivalTime = new DateTime(2021, 12, 01, 07, 00, 00),
 
             };
+
             List<Train> AvailableTrainList = new List<Train>();
             AvailableTrainList.Add(train1);
             AvailableTrainList.Add(train2);
